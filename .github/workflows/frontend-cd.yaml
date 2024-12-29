@@ -103,10 +103,14 @@ jobs:
       - name: Config kubectl
         run: aws eks update-kubeconfig --region $AWS_REGION --name $CLUSTER_NAME
 
-      - name: Update Kubernetes Manifests
+      - name: Install 
         run: |
-          sed -i "s|image:.*|image: $ECR_REPOSITORY:$GITHUB_SHA|g" deployment.yaml
-        working-directory: frontend/k8s
+          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+          mv kustomize /usr/local/bin/
+
+      - name: Update Kubernetes Manifests
+        run: kustomize edit set image $ECR_REPOSITORY:$GITHUB_SHA
+        working-directory: backend/k8s
       
       - name: Apply Kubernetes Manifests
         run: |

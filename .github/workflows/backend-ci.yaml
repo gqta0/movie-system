@@ -30,7 +30,9 @@ jobs:
         working-directory: backend
 
       - name: Run ESLint
-        run: pipenv run lint
+        run: |
+          pipenv shell 
+          pipenv run lint
         working-directory: backend
 
   test:

@@ -35,7 +35,9 @@ jobs:
         working-directory: backend
 
       - name: Run ESLint
-        run: pipenv run lint
+        run: |
+          pipenv shell 
+          pipenv run lint
         working-directory: backend
 
   test:
@@ -105,13 +107,19 @@ jobs:
             aws-region: us-east-1
         - name: Config kubectl
           run: aws eks update-kubeconfig --region $AWS_REGION --name $CLUSTER_NAME
-  
-        - name: Update Kubernetes Manifests
+        
+        - name: Install 
           run: |
-            sed -i "s|image:.*|image: $ECR_REPOSITORY:$GITHUB_SHA|g" deployment.yaml
+            curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+            mv kustomize /usr/local/bin/
+            
+        - name: Update Kubernetes Manifests
+          run: kustomize edit set image $ECR_REPOSITORY:$GITHUB_SHA
           working-directory: backend/k8s
+
+        
         
         - name: Apply Kubernetes Manifests
           run: |
-            kubectl apply -f kustomization.yaml
+            kustomize build . | kubectl apply -f -
           working-directory: backend/k8s
