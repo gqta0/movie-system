@@ -112,13 +112,11 @@ jobs:
           run: |
             curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
             mv kustomize /usr/local/bin/
-            
+
         - name: Update Kubernetes Manifests
           run: kustomize edit set image $ECR_REPOSITORY:$GITHUB_SHA
           working-directory: backend/k8s
 
-        
-        
         - name: Apply Kubernetes Manifests
           run: |
             kustomize build . | kubectl apply -f -
