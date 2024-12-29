@@ -103,7 +103,7 @@ jobs:
       - name: Config kubectl
         run: aws eks update-kubeconfig --region $AWS_REGION --name $CLUSTER_NAME
 
-      - name: Install 
+      - name: Install kustomize
         run: |
           curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
           mv kustomize /usr/local/bin/
@@ -114,5 +114,5 @@ jobs:
       
       - name: Apply Kubernetes Manifests
         run: |
-          kubectl apply -f kustomization.yaml
+          kustomize build . | kubectl apply -f -
         working-directory: frontend/k8s
