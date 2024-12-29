@@ -88,5 +88,7 @@ jobs:
           version: 'v1.25.0' # Specify your desired kubectl version
 
       - name: Apply Kubernetes Manifests
-        run: kubectl apply -f k8s/deployment.yaml
+        run: |
+          sed -i "s|image:.*|image: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$GITHUB_SHA|g" k8s\deployment.yaml
+          kubectl apply -f k8s/kustomization.yaml
         working-directory: frontend
