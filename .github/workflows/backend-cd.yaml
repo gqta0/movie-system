@@ -7,6 +7,10 @@ on:
     paths:
       - 'backend/**'
   workflow_dispatch: # Allows manual execution
+  
+env:
+  ECR_REPOSITORY: 710173168288.dkr.ecr.us-east-1.amazonaws.com/frontend
+  AWS_REGION: us-east-1 # Change to your AWS region
 
 jobs:
   lint:
@@ -64,7 +68,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::123456789012:role/my-github-actions-role
+          role-to-assume: arn:aws:iam::710173168288:user/Administrator_Role
           aws-region: us-east-1
 
       - name: Log in to Amazon ECR

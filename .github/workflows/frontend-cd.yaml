@@ -9,7 +9,7 @@ on:
   workflow_dispatch: # Allows manual trigger
 
 env:
-  ECR_REPOSITORY: your-ecr-repo-name
+  ECR_REPOSITORY: 710173168288.dkr.ecr.us-east-1.amazonaws.com/frontend
   AWS_REGION: us-east-1 # Change to your AWS region
 
 jobs:
@@ -59,7 +59,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
