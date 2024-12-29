@@ -79,11 +79,11 @@ jobs:
       - name: Build Docker Image
         run: |
           docker build -t $ECR_REPOSITORY:$GITHUB_SHA .
-          docker tag $ECR_REPOSITORY:$GITHUB_SHA $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$GITHUB_SHA
-        working-directory: frontend
+          docker tag $ECR_REPOSITORY:$GITHUB_SHA $ECR_REPOSITORY:$GITHUB_SHA
+        working-directory: backend
 
       - name: Push Docker Image to ECR
-        run: docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$GITHUB_SHA
+        run: docker push $ECR_REPOSITORY:$GITHUB_SHA
   deploy:
       name: Deploy to Kubernetes
       runs-on: ubuntu-latest
@@ -99,6 +99,6 @@ jobs:
 
         - name: Apply Kubernetes Manifests
           run: |
-            sed -i "s|image:.*|image: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$GITHUB_SHA|g" k8s\deployment.yaml
+            sed -i "s|image:.*|image: $ECR_REPOSITORY:$GITHUB_SHA|g" k8s\deployment.yaml
             kubectl apply -f k8s/kustomization.yaml
           working-directory: backend
