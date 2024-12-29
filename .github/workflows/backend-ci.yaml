@@ -66,4 +66,4 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -t backend-app starter/backend
+          docker build -t backend-app backend
