@@ -99,6 +99,6 @@ jobs:
 
         - name: Apply Kubernetes Manifests
           run: |
-            sed -i "s|image:.*|image: $ECR_REPOSITORY:$GITHUB_SHA|g" k8s\deployment.yaml
-            kubectl apply -f k8s/kustomization.yaml
-          working-directory: backend
+            sed -i "s|image:.*|image: $ECR_REPOSITORY:$GITHUB_SHA|g" deployment.yaml
+            kubectl apply -f kustomization.yaml
+          working-directory: backend/k8s
