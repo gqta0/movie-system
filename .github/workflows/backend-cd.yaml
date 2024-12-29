@@ -11,6 +11,7 @@ on:
 env:
   ECR_REPOSITORY: 710173168288.dkr.ecr.us-east-1.amazonaws.com/frontend
   AWS_REGION: us-east-1 # Change to your AWS region
+  CLUSTER_NAME: cluster 
 
 jobs:
   lint:
@@ -97,8 +98,15 @@ jobs:
           with:
             version: 'v1.25.0' # Specify your desired kubectl version
 
-        - name: Apply Kubernetes Manifests
+        - name: Config kubectl
+          run: aws eks update-kubeconfig --region $AWS_REGION --name $CLUSTER_NAME
+  
+        - name: Update Kubernetes Manifests
           run: |
             sed -i "s|image:.*|image: $ECR_REPOSITORY:$GITHUB_SHA|g" deployment.yaml
+          working-directory: backend/k8s
+        
+        - name: Apply Kubernetes Manifests
+          run: |
             kubectl apply -f kustomization.yaml
           working-directory: backend/k8s
