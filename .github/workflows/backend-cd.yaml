@@ -115,7 +115,8 @@ jobs:
             mv kustomize /usr/local/bin/
 
         - name: Update Kubernetes Manifests
-          run: kustomize edit set image $ECR_REPOSITORY:$GITHUB_SHA
+          run: |
+            sed -i "s|image:.*|image: $ECR_REPOSITORY:$GITHUB_SHA|g" deployment.yaml
           working-directory: backend/k8s
 
         - name: Apply Kubernetes Manifests
