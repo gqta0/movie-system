@@ -111,7 +111,7 @@ jobs:
       - name: Update Kubernetes Manifests
         run: |
           sed -i "s|image:.*|image: $ECR_REPOSITORY:$GITHUB_SHA|g" deployment.yaml
-        working-directory: backend/k8s
+        working-directory: frontend/k8s
       
       - name: Apply Kubernetes Manifests
         run: |
