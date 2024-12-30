@@ -12,7 +12,7 @@ env:
   ECR_REPOSITORY: 710173168288.dkr.ecr.us-east-1.amazonaws.com/frontend
   AWS_REGION: us-east-1 
   CLUSTER_NAME: cluster 
-  REACT_APP_MOVIE_API_URL: https://1FF10DB68418A9687EFCA8E4951C61B0.gr7.us-east-1.eks.amazonaws.com/api?timeout=32s
+  REACT_APP_MOVIE_API_URL: a56e4a58a324943a8a4912fb0a18d4d2-1553900139.us-east-1.elb.amazonaws.com
 jobs:
   lint:
     name: Lint Code
