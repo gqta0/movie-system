@@ -12,12 +12,12 @@ RUN apk update && \
   linux-headers \
   openssl \
   libffi-dev \
-  && pip install pipenv
+  && pip install pipenv uwsgi
 
 RUN mkdir -p /var/www/app && mkdir /app
 
 COPY Pipfile* /app
-RUN cd /app && pipenv install
+RUN cd /app && pipenv install 
 
 COPY . /app
 
